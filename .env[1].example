@@ -1,114 +1,238 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,viewport-fit=cover,initial-scale=1"/>
-  <title>Segni di Vitta — Roleta Premiada</title>
-  <style>
-    :root{--bg:#080808;--white:#e9e9e9;--red:#c71b1b}
-    body{margin:0;background:var(--bg);color:var(--white);font-family:Inter,system-ui,Arial;display:flex;align-items:center;justify-content:center;height:100vh}
-    .card{width:360px;padding:20px;text-align:center}
-    h1{font-size:22px;margin:4px 0 14px}
-    .wheel{width:320px;height:320px;border-radius:50%;position:relative;margin:0 auto;overflow:visible;box-shadow:0 8px 30px rgba(0,0,0,.7)}
-    .wheel-inner{width:100%;height:100%;border-radius:50%;background:linear-gradient(180deg,#0b0b0b,#111);display:flex;align-items:center;justify-content:center;transform:rotate(0deg);transition:transform 4s cubic-bezier(.2,.9,.2,1)}
-    .center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:60px;height:60px;border-radius:50%;background:#111;border:4px solid #222;display:flex;align-items:center;justify-content:center}
-    .pointer{position:absolute;left:50%;top:-12px;transform:translateX(-50%);width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-bottom:18px solid var(--red)}
-    button{margin-top:16px;padding:12px 18px;border-radius:8px;border:0;background:var(--red);color:#fff;font-weight:700;cursor:pointer}
-    small{display:block;margin-top:10px;color:#aaa;font-size:12px}
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roleta Premiada - Segni di Vitta Tattoo</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="card">
-    <h1>Segni di Vitta — Tatuagem Premiada</h1>
-    <div style="position:relative">
-      <div class="pointer"></div>
-      <div class="wheel" id="wheel">
-        <div class="wheel-inner" id="wheelInner">
-          <!-- pseudoslices — we'll draw sectors via canvas for better visual,
-               but to keep simples we'll overlay an SVG sectors image or rely on CSS rotation
-               Here we keep inner as placeholder — numbers will be in the spin result -->
-          <div class="center"></div>
-        </div>
-      </div>
-    </div>
+  <h1 class="titulo">🎯 Roleta Premiada Segni di Vitta Tattoo 🎯</h1>
 
-    <button id="spinBtn">GIRAR ROLET A</button>
-    <small>Promoção válida até 10/12 — apenas novos orçamentos</small>
+  <div class="roleta-container">
+    <canvas id="wheel" width="400" height="400"></canvas>
+    <div id="pointer"></div>
+    <div id="efeito-brilho"></div>
   </div>
 
+  <button id="girar">GIRAR</button>
+
+  <div id="mensagem" class="hidden">
+    <h2 id="resultado-texto"></h2>
+    <a id="whatsapp-btn" target="_blank">Resgatar no WhatsApp</a>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html><style>
+body {
+  background: #0b0b0b url('https://www.transparenttextures.com/patterns/dark-mosaic.png');
+  color: #fff;
+  font-family: 'Anton', sans-serif;
+  text-align: center;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.titulo {
+  font-size: 2.5rem;
+  text-shadow: 2px 2px 10px #ff0000;
+  margin-bottom: 25px;
+}
+
+.roleta-container {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+#wheel {
+  border-radius: 50%;
+  box-shadow: 0 0 40px #ff0000;
+}
+
+#pointer {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0; 
+  height: 0; 
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 30px solid #ff0000;
+}
+
+#efeito-brilho {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  box-shadow: 0 0 0px 0px #ff0000;
+  pointer-events: none;
+  opacity: 0;
+  transition: all 0.5s ease-out;
+}
+
+button#girar {
+  background: #ff0000;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  padding: 12px 30px;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: transform 0.5s;
+}
+
+button#girar:hover {
+  transform: scale(1.05);
+}
+
+#mensagem {
+  margin-top: 25px;
+}
+
+#mensagem h2 {
+  font-size: 1.7rem;
+  color: #fff;
+  margin-bottom: 15px;
+}
+
+#whatsapp-btn {
+  display: inline-block;
+  background: #25D366;
+  color: white;
+  text-decoration: none;
+  padding: 14px 30px;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  box-shadow: 0 0 15px #25D36677;
+  transition: background 0.3s;
+}
+
+#whatsapp-btn:hover {
+  background: #1ebe5c;
+}
+
+}
+
+
+ </style>
+</head>
+<body>
+  <h1>Gire a Roleta e Ganhe!</h1>
+  <div id="pointer"></div>
+  <canvas id="wheel" width="500" height="500"></canvas>
+  <button id="spinBtn">GIRAR</button>
+
 <script>
-/*
- Frontend logic:
- - Ao clicar, calculamos uma rotação aleatória (multiples spins) e determinamos a "fatia" pelo ângulo final.
- - Enviamos resultado ao backend via fetch POST /spin com JSON {result, angle, timestamp}
- - Backend envia WhatsApp pra você (via Twilio)
- - Ajuste as fatias em `segments` conforme seu layout.
-*/
+  const wheel = document.getElementById('wheel');
+  const ctx = wheel.getContext('2d');
+  const prizes = ['50% OFF', '30% OFF', '20% OFF', 'R$150', 'R$200', 'R$300'];
+  const colors = ['#111', '#222', '#111', '#222', '#111', '#222'];
 
-const segments = [
-  {label:'50% OFF', type:'percent'},
-  {label:'30% OFF', type:'percent'},
-  {label:'R$ 200', type:'money'},
-  {label:'R$ 300', type:'money'},
-  {label:'20% OFF', type:'percent'},
-  {label:'50% OFF', type:'percent'}
-];
-// number of segments:
-const segCount = segments.length;
+  let startAngle = 0;
+  const arc = Math.PI / (prizes.length / 2);
+  let spinTimeout = null;
+  let spinAngleStart = 0;
+  let spinTime = 0;
+  let spinTimeTotal = 0;
 
-const wheelInner = document.getElementById('wheelInner');
-const spinBtn = document.getElementById('spinBtn');
+const drawRouletteWheel = () => {
+  const outsideRadius = 180;
+  const textRadius = 140;
+  const insideRadius = 50;
 
-function randomInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min }
+  ctx.clearRect(0, 0, 400, 400);
 
-spinBtn.addEventListener('click', async () => {
-  spinBtn.disabled = true;
-  spinBtn.innerText = 'GIRANDO...';
-
-  // choose random final segment
-  const chosenIndex = randomInt(0, segCount-1);
-  // compute final angle so pointer hits chosen segment:
-  // each slice size in degrees:
-  const slice = 360 / segCount;
-  // pick random offset inside slice for realism
-  const offset = Math.random() * (slice - 6) - (slice/2 - 3);
-  // we want many full rotations + final angle:
-  const full = 360 * randomInt(4,7);
-  const finalAngle = full + (360 - (chosenIndex * slice) - slice/2) + offset;
-
-  // animate:
-  wheelInner.style.transition = 'transform 4s cubic-bezier(.2,.9,.2,1)';
-  wheelInner.style.transform = `rotate(${finalAngle}deg)`;
-
-  // wait animation end:
-  await new Promise(res => setTimeout(res, 4200));
-
-  const result = segments[chosenIndex].label;
-  // show quick alert (you can show modal)
-  alert('Resultado: ' + result);
-
-  // send to backend to trigger WhatsApp notification
-  try {
-    await fetch('/spin', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        result,
-        chosenIndex,
-        timestamp: new Date().toISOString(),
-        source: 'roleta_link_instagram'
-      })
-    });
-    // success UI
-    spinBtn.innerText = 'GIRAR NOVAMENTE';
-    spinBtn.disabled = false;
-  } catch(err){
-    console.error(err);
-    alert('Erro ao notificar. Contate o administrador.');
-    spinBtn.innerText = 'GIRAR NOVAMENTE';
-    spinBtn.disabled = false;
+  for (let i = 0; i < prizes.length; i++) {
+    const angle = startAngle + i * arc;
+    ctx.fillStyle = colors[i];
+    ctx.beginPath();
+    ctx.arc(200, 200, outsideRadius, angle, angle + arc, false);
+    ctx.arc(200, 200, insideRadius, angle + arc, angle, true);
+    ctx.fill();
+    ctx.save();
+    ctx.fillStyle = "#ff0000";
+    ctx.translate(200 + Math.cos(angle + arc / 2) * textRadius, 
+                  200 + Math.sin(angle + arc / 2) * textRadius);
+    ctx.rotate(angle + arc / 2 + Math.PI / 2);
+    ctx.font = "bold 20px Anton";
+    ctx.fillText(prizes[i], -ctx.measureText(prizes[i]).width / 2, 0);
+    ctx.restore();
   }
-});
+  ctx.beginPath();
+  ctx.arc(200, 200, insideRadius, 0, 2 * Math.PI);
+  ctx.fillStyle = "#000";
+  ctx.fill();
+};
+
+const efeitoBrilho = document.getElementById('efeito-brilho');
+
+const rotateWheel = () => {
+  const stored = localStorage.getItem('giroFeito');
+  if (stored) {
+    alert('Você já girou a roleta! Aguarde a próxima promoção.');
+    return;
+  }
+
+  spinAngleStart = Math.random() * 10 + 10;
+  spinTime = 0;
+  spinTimeTotal = Math.random() * 3000 + 4000;
+  rotateAnimation();
+};
+
+const rotateAnimation = () => {
+  spinTime += 30;
+  if (spinTime >= spinTimeTotal) {
+    stopRotateWheel();
+    return;
+  }
+  const spinAngle = spinAngleStart - easeOut(spinTime, 0, spinAngleStart, spinTimeTotal);
+  startAngle += (spinAngle * Math.PI / 180);
+  drawRouletteWheel();
+  spinTimeout = setTimeout(rotateAnimation, 30);
+};
+
+const stopRotateWheel = () => {
+  clearTimeout(spinTimeout);
+  const degrees = startAngle * 180 / Math.PI + 90;
+  const arcd = arc * 180 / Math.PI;
+  const index = Math.floor((360 - (degrees % 360)) / arcd);
+  const prize = prizes[index];
+
+  efeitoBrilho.style.opacity = "1";
+  efeitoBrilho.style.boxShadow = "0 0 40px 15px #ff0000";
+
+  setTimeout(() => {
+    efeitoBrilho.style.opacity = "0";
+  }, 800);
+
+  setTimeout(() => {
+    document.getElementById('mensagem').classList.remove('hidden');
+    document.getElementById('resultado-texto').textContent = `🎉 Parabéns! Você ganhou ${prize}!`;
+    const whatsappMsg = encodeURIComponent(`Oi! Girei a roleta e ganhei ${prize}!`);
+    document.getElementById('whatsapp-btn').href = `https://api.whatsapp.com/send?phone=5547992432149&text=${whatsappMsg}`;
+    localStorage.setItem('giroFeito', 'true');
+  }, 1000);
+};
+
+const easeOut = (t, b, c, d) => {
+  const ts = (t /= d) * t;
+  const tc = ts * t;
+  return b + c * (tc + -3 * ts + 3 * t);
+};
+
+drawRouletteWheel();
+document.getElementById('girar').addEventListener('click', rotateWheel);
 </script>
 </body>
 </html>
